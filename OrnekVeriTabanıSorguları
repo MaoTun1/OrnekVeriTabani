@@ -1,0 +1,74 @@
+
+
+SELECT Article.title
+FROM Article
+WHERE volId = 'April2023Bavul';
+
+SELECT Person.Name
+FROM Person
+WHERE isEditor = false AND isAuthor = false AND isReviewer = false
+AND Volume.vid = 'April2023Bavul';
+
+SELECT DISTINCT Name
+FROM Person
+WHERE isReviewer = true
+AND EXISTS (
+    SELECT 1
+    FROM Article AS AR
+    JOIN ArticleKeywords AS AK ON AR.id = AK.aid
+    JOIN PersonInterest AS PI ON PI.keywId = AK.keywId AND PI.email = Person.Email
+    WHERE AR.volId = 'April2023Bavul'
+);
+
+
+SELECT P.Name, AR.scoreOfTheReviewer
+FROM Person AS P
+JOIN ArticleReviews AS AR ON P.Email = AR.email
+WHERE AR.id = 4;
+
+
+SELECT P.Name, A.title
+FROM Article AS A
+JOIN Person AS P ON A.correspAut = P.Email
+WHERE A.volId = 'April2023Bavul' AND A.result = 'accept';
+
+
+SELECT A.title, P.Name AS Author, PR.Name AS Reviewer
+FROM Article AS A
+JOIN ArticleReviews AS AR ON A.id = AR.id
+JOIN Person AS PR ON AR.email = PR.Email
+JOIN Person AS P ON A.correspAut = P.Email
+WHERE A.volId = 'April2023Bavul';
+
+ 
+SELECT P.Name
+FROM Person AS P
+JOIN (
+    SELECT email, COUNT(*) AS review_count
+    FROM ArticleReviews
+    GROUP BY email
+) AS R ON P.Email = R.email
+WHERE R.review_count = (
+    SELECT MIN(review_count)
+    FROM (
+        SELECT COUNT(*) AS review_count
+        FROM ArticleReviews
+        GROUP BY email
+    ) AS min_review_count
+);
+
+SELECT P.Name
+FROM Person AS P
+JOIN (
+    SELECT correspAut, COUNT(*) AS accepted_articles
+    FROM Article
+    WHERE result = 'accept'
+    GROUP BY correspAut
+    -- emailleri aynı olan yerden
+) AS A ON P.Email = A.correspAut
+;
+
+SELECT A.title, A.result AS status
+FROM Article AS A
+JOIN Volume AS V ON A.volId = V.id
+WHERE V.name = 'April2023Bavul';

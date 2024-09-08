@@ -1,0 +1,374 @@
+#Sorgu çalışmaları için kullanılabilecek örnek veri tabanı
+
+
+CREATE TABLE Journal(
+name varchar(10) primary key,
+frequency varchar(20)
+);
+
+
+INSERT INTO Journal
+values("Penguen","monthly"),
+("Ot","bi-monthly"),
+("Kafa","semi-annually"),
+("Bavul","quarterly")
+,("BilimCocuk","annual");
+
+CREATE TABLE Volume( 
+id varchar(50) PRIMARY KEY,
+name varchar(10) unique,
+dates varchar(100),
+publicationDate Date
+);
+
+
+
+INSERT INTO VOLUME
+VALUES("April2023Penguen","Penguen1","01-04,5-04,10-04,14-04,18-04","2023-04-21"),
+("May2023Penguen","Penguen2","01-05,5-05,10-05,14-05,18-05","2023-05-21"),
+("June2023Penguen","Penguen3","01-06,5-06,10-06,14-06,18-06","2023-06-21"),
+("July2023Penguen","Penguen4","01-07,5-07,10-07,14-07,18-07","2023-07-21"),
+("August2023Penguen","Penguen5","01-08,5-08,10-08,14-08,18-08","2023-08-21");
+
+
+INSERT INTO VOLUME
+VALUES("April2023Ot","Ot1","02-03,12-03,22-03,01-03,12-04","2023-04-22"),
+("June2023Ot","Ot2","02-05,12-05,22-05,01-05,12-06","2023-06-22"),
+("Agustus2023Ot","Ot3","02-07,12-07,22-07,01-07,12-08","2023-08-22"),
+("October2023Ot","Ot4","02-09,12-09,22-09,01-09,12-10","2023-10-22"),
+("December2023Ot","Ot5","02-11,12-11,22-11,01-11,12-12","2023-12-22");
+
+
+INSERT INTO VOLUME
+VALUES("January2022Kafa","Kafa1","01-04,5-04,10-04,14-04,18-04","2022-01-21"),
+("July2022Kafa","Kafa2","01-05,5-05,10-05,14-05,18-05","2022-07-21"),
+("January2023Kafa","Kafa3","01-06,5-06,10-06,14-06,18-06","2023-01-21"),
+("July2023Kafa","Kafa4","01-07,5-07,10-07,14-07,18-07","2023-07-21"),
+("January2024Kafa","Kafa5","01-08,5-08,10-08,14-08,18-08","2024-07-21");
+
+
+INSERT INTO VOLUME 
+VALUES("January2023Bavul","Bavul1","01-01,5-01,10-01,14-01,18-01","2023-01-25"),
+("April2023Bavul","Bavul2","01-04,5-04,10-04,14-04,18-04","2023-04-25"),
+("July2023Bavul","Bavul3","01-07,5-07,10-07,14-07,18-07","2023-07-25"),
+("October2023Bavul","Bavul4","01-10,5-10,10-10,14-10,18-10","2023-10-25"),
+("January2024Bavul","Bavul5","01-08,5-08,10-08,14-08,18-08","2024-01-25");
+
+INSERT INTO VOLUME
+VALUES("April2020BilimCocuk","Bilim1","02-03,12-03,22-03,01-03,12-04","2020-04-22"),
+("April2021BilimCocuk","Bilim2","02-05,12-05,22-05,01-05,12-06","2021-06-22"),
+("April2022BilimCocuk","Bilim3","02-07,12-07,22-07,01-07,12-08","2022-06-22"),
+("April2023BilimCocuk","Bilim4","02-09,12-09,22-09,01-09,12-10","2023-10-22"),
+("April2024BilimCocuk","Bilim5","02-11,12-11,22-11,01-11,12-12","2024-12-22");
+
+create table Keywords(
+keywId int primary key,
+keyword varchar(10)
+);
+
+insert into Keywords
+values(1,"Politics"),(2,"Funy"),(3,"Cartoon"),(4,"Science"),(5,"Life");
+
+CREATE TABLE volumeTheme(
+Id varchar(50),
+FOREIGN KEY (Id) REFERENCES volume(id),
+name varchar(10),
+FOREIGN KEY (name) REFERENCES journal(name),
+keywId int,
+FOREIGN KEY (keywId) REFERENCES keywords(keywId)
+);
+
+insert into volumeTheme
+values ("April2023Penguen","Penguen",3),("May2023Penguen","Penguen",3),("June2023Penguen","Penguen",3),("July2023Penguen","Penguen",3),("August2023Penguen","Penguen",3);
+
+insert into volumeTheme
+values ("April2023Ot","Ot",1),("June2023Ot","Ot",1),("Agustus2023Ot","Ot",1),("October2023Ot","Ot",1),("December2023Ot","Ot",1);
+
+insert into volumeTheme
+values ("January2022Kafa","Kafa",2),("July2022Kafa","Kafa",2),("January2023Kafa","Kafa",2),("July2023Kafa","Kafa",2),("January2024Kafa","Kafa",2);
+
+insert into volumeTheme
+values ("January2023Bavul","Bavul",5),("April2023Bavul","Bavul",5),("July2023Bavul","Bavul",5),("October2023Bavul","Bavul",5),("January2023Bavul","Bavul",5);
+
+insert into volumeTheme
+values ("April2020BilimCocuk","BilimCocuk",4),("April2021BilimCocuk","BilimCocuk",4),("April2022BilimCocuk","BilimCocuk",4),("April2023BilimCocuk","BilimCocuk",4),("April2024BilimCocuk","BilimCocuk",4);
+
+Create table person(
+Email varchar(100) primary key,
+Name varchar(10),
+Vid varchar(50),
+Foreign key (vid) references volume (id),
+Vname varchar(10),
+Foreign key (vname) references volume(name),
+isAuthor boolean,
+isReviewer boolean,
+isEditor boolean
+);
+
+INSERT INTO person
+values("emine.ekin@test.com","Emine",null,null,true,true,true),
+("taner.eskil@test.com","Taner",null,null,true,true,true),
+("ozay.ezerceli@test.com","Ozay",null,null,true,false,true),
+("gizem.gümüscekicci@test.com","Gizem",null,null,false,false,true),
+("mertali.koprulu@test.com","Mertali",null,null,false,false,true);
+
+insert into person
+values ("metehan.cevik@test.com","Metehan",null,null,true,true,false),
+("erkin.bozkurt@test.com","Erkin",null,null,true,true,false),
+("berke.ozenc@test.com","Berke",null,null,true,true,false);
+
+insert into person
+values ("onur.kurtulus@test.com","Onur",null,null,false,false,false),
+("ege.yuksel@test.com","Ege",null,null,false,false,false),
+("irem.saglam@test.com","Irem",null,null,false,false,false);
+
+insert into person
+values ("ahmet.bulut@test.com","Ahmet",null,null,true,true,false),
+("ayşe.cınar@test.com","Ayşe",null,null,false,true,true),
+("sıla.kibrit@test.com","sıla",null,null,true,true,true),
+("turkay.saglam@test.com","Turkay",null,null,true,true,true);
+
+
+insert into person
+values ("kursat.bir@test.com","Kursat",null,null,true,true,false),
+("mehmet.cam@test.com","Mehmet",null,null,false,true,true),
+("emir.dal@test.com","Emir",null,null,true,true,true),
+("gokalp.gol@test.com","Gokalp",null,null,true,true,true);
+
+insert into person
+values ("kemal.parlak@test.com","Kemal",null,null,true,true,false),
+("doruk.demir@test.com","Doruk",null,null,false,true,true),
+("hasan.yuce@test.com","Hasan",null,null,true,true,true),
+("serpil.elmas@test.com","Serpil",null,null,true,true,true);
+
+Create table PersonInterest(
+email varchar(100),
+foreign key (email) references person(email),
+keywId int,
+foreign key (keywId) references keywords(keywId)
+);
+
+insert into personinterest
+values("emine.ekin@test.com",5),
+("emine.ekin@test.com",3),
+("gizem.gümüscekicci@test.com",5),
+("mertali.koprulu@test.com",3),
+("ozay.ezerceli@test.com",2),
+("taner.eskil@test.com",2),
+("onur.kurtulus@test.com",2),
+("ege.yuksel@test.com",3),
+("irem.saglam@test.com",5);
+
+insert into personinterest
+values("emine.ekin@test.com",2),
+("gizem.gümüscekicci@test.com",2),
+("gizem.gümüscekicci@test.com",1),
+("mertali.koprulu@test.com",1),
+("ozay.ezerceli@test.com",3),
+("ozay.ezerceli@test.com",4),
+("taner.eskil@test.com",4),
+("onur.kurtulus@test.com",2),
+("ege.yuksel@test.com",3),
+("irem.saglam@test.com",5);
+
+
+insert into personinterest
+values ("erkin.bozkurt@test.com",3),
+("berke.ozenc@test.com",1);
+
+insert into personinterest
+values ("metehan.cevik@test.com",4),
+("erkin.bozkurt@test.com",5),
+("berke.ozenc@test.com",4);
+
+
+insert into personinterest
+values
+("ayse.cınar@test.com",5),
+("sıla.kibrit@test.com",2),
+("turkay.saglam@test.com",2);
+
+insert into personinterest
+values ("ahmet.bulut@test.com",4),
+("ayse.cınar@test.com",3),
+("turkay.saglam@test.com",1);
+
+
+insert into personinterest
+values("kursat.bir@test.com",1);
+
+
+insert into personinterest
+values ("kursat.bir@test.com",4),
+("mehmet.cam@test.com",4),
+("gokalp.gol@test.com",3);
+
+insert into personinterest
+values("doruk.demir@test.com",3),
+("hasan.yuce@test.com",3);
+
+
+insert into personinterest
+values("hasan.yuce@test.com",5),
+("serpil.elmas@test.com",1);
+
+Create table Article(
+id int primary key,
+title varchar(100),
+bodyText varchar(15),
+volId varchar(50),
+foreign key (volId) references Volume(id),
+volName varchar(15),
+foreign key (volName) references Volume(name),
+correspAut varchar(100),
+foreign key (correspAut) references Person(email),
+submssonDate Date,
+result varchar(10)
+);
+
+
+insert into article 
+values(1,"Artificial Intelligence: A Modern Approach","Apros","April2023Penguen","Penguen1","emine.ekin@test.com","2023-04-18","accept"),
+(2,"Machine learning","Apros","April2023Penguen","Penguen1","emine.ekin@test.com","2023-04-14","accept"),
+(3,"Language identification in the limit","Abadi","June2023Ot","Ot2","taner.eskil@test.com","2023-05-22","accept"),
+(4,"Learning representations by back-propagating errors","Abadi","December2023Ot","Ot5","taner.eskil@test.com","2023-11-22","accept"),
+(5,"Induction of Decision Trees","Arial","April2023Bavul","Bavul2","gizem.gümüscekicci@test.com","2023-04-01","accept"),
+(6,"Induction of Decision Trees New Era","Arial","October2023Bavul","Bavul4","gizem.gümüscekicci@test.com","2023-10-5","accept"),
+(7,"Learning Quickly When Irrelevant Attributes Abound: A New Linear-threshold Algorithm","Arial Black","April2022BilimCocuk","Bilim3","mertali.koprulu@test.com","2023-07-22","accept"),
+(8,"Learning to predict by the method of Temporal difference","Arial Black","April2024BilimCocuk","Bilim5","mertali.koprulu@test.com","2023-11-01","accept"),
+(9,"Learnability and the Vapnik–Chervonenkis dimension","Cambria","January2022Kafa","Kafa1","ozay.ezerceli@test.com","2023-04-10","accept"),
+(10,"A program data flow analysis procedure","Cambria","July2022Kafa","Kafa2","ozay.ezerceli@test.com","2023-05-14","accept"),
+(11,"Cryptographic limitations on learning boolean formulae and finite automata","Cambria","July2022Kafa","Kafa2","emine.ekin@test.com","2023-05-14","accept"),
+(12,"The strength of weak learnability","Abadi","April2023Bavul","Bavul2","taner.eskil@test.com","2023-04-05","accept"),
+(13,"A training algorithm for optimum margin classifiers","Abadi","June2023Ot","Ot2","mertali.koprulu@test.com","2023-05-02","accept"),
+(14,"A fast learning algorithm for deep belief nets","Arial","October2023Bavul","Bavul4","ozay.ezerceli@test.com","2023-10-01","accept"),
+(15,"Knowledge-based analysis of microarray gene expression data by using support vector machines","Cambria","April2023Penguen","Penguen1","gizem.gümüscekicci@test.com","2023-04-05","accept"),
+(16,"On the translation of languages from left to right","Cambria","December2023Ot","Ot5","ozay.ezerceli@test.com","2023-11-02","reject"),
+(17,"Semantics of Context-Free Languages","Apros","May2023Penguen","Penguen2","mertali.koprulu@test.com","2023-05-18","revision"),
+(18,"Compiler Construction for Digital Computers","Apros","July2023Kafa","Kafa4","gizem.gümüscekicci@test.com","2023-07-14","reject"),
+(19,"A Unified Approach to Global Program Optimization","Apros","July2023Kafa","Kafa4","gizem.gümüscekicci@test.com","2023-07-01","revision");
+
+
+create table WrittenBy(
+id int,
+foreign key (id) references Article(id),
+email varchar(100),
+foreign key (email) references Person(email)
+);
+
+insert into WrittenBy
+values (1,"emine.ekin@test.com"),
+(2,"emine.ekin@test.com"),
+(3,"gizem.gümüscekicci@test.com"),
+(4,"taner.eskil@test.com"),
+(5,"ozay.ezerceli@test.com"),
+(6,"emine.ekin@test.com"),
+(7,"mertali.koprulu@test.com"),
+(8,"taner.eskil@test.com"),
+(9,"ozay.ezerceli@test.com"),
+(10,"emine.ekin@test.com"),
+(11,"gizem.gümüscekicci@test.com"),
+(12,"taner.eskil@test.com"),
+(13,"gizem.gümüscekicci@test.com"),
+(14,"emine.ekin@test.com"),
+(15,"taner.eskil@test.com"),
+(16,"gizem.gümüscekicci@test.com"),
+(17,"ozay.ezerceli@test.com"),
+(18,"mertali.koprulu@test.com"),
+(19,"mertali.koprulu@test.com");
+
+Create table ArticleKeywords(
+aid int,
+foreign key (aid) references Article(id),
+keywId int,
+foreign key (keywId) references Keywords(keywId)
+);
+
+insert into ArticleKeywords
+values (1,5),
+(2,2),
+(3,2),
+(4,4), 
+(5,5),
+(6,2),
+(7,4),  
+(8,3),
+(9,2),
+(10,4),
+(11,3),
+(12,2),
+(13,1),
+(14,4),
+(15,1),
+(16,3),
+(17,4),
+(18,5),
+(19,1);
+
+Create table ArticleReviews(
+id int,
+foreign key (id) references Article(id),
+email varchar(100),
+foreign key (email) references Person(email),
+scoreOfTheReviewer int
+);
+
+insert into articlereviews
+values(1,"erkin.bozkurt@test.com",1),
+(1,"ayse.cınar@test.com",0.5),
+(1,"hasan.yuce@test.com",0.5),
+(2,"sıla.kibrit@test.com",1),
+(2,"turkay.saglam@test.com",1),
+(2,"taner.eskil@test.com",1),
+(3,"taner.eskil@test.com",0.5),
+(3,"sıla.kibrit@test.com",1),
+(3,"turkay.saglam@test.com",1),
+(4,"metehan.cevik@test.com",0),
+(4,"berke.ozenc@test.com",1),
+(4,"ahmet.bulut@test.com",1),
+(5,"erkin.bozkurt@test.com",1),
+(5,"ayse.cınar@test.com",1),
+(5,"kursat.bir@test.com",0),
+(6,"taner.eskil@test.com",1),
+(6,"sıla.kibrit@test.com",1),
+(6,"turkay.saglam@test.com",0.5),
+(7,"metehan.cevik@test.com",1),
+(7,"ahmet.bulut@test.com",0),
+(7,"kursat.bir@test.com",1),
+(8,"erkin.bozkurt@test.com",1),
+(8,"ayse.cınar@test.com",1),
+(8,"gokalp.gol@test.com",1),
+(9,"taner.eskil@test.com",1),
+(9,"sıla.kibrit@test.com",1),
+(9,"turkay.saglam@test.com",1),
+(10,"ahmet.bulut@test.com",1),
+(10,"kursat.bir@test.com",0.5),
+(10,"mehmet.cam@test.com",1),
+(11,"ayse.cınar@test.com",0),
+(11,"gokalp.gol@test.com",1),
+(11,"doruk.demir@test.com",1),
+(12,"taner.eskil@test.com",1),
+(12,"sıla.kibrit@test.com",1),
+(12,"turkay.saglam@test.com",1),
+(13,"turkay.saglam@test.com",0.5),
+(13,"kursat.bir@test.com",1),
+(13,"serpil.elmas@test.com",1),
+(14,"metehan.cevik@test.com",0),
+(14,"berke.ozenc@test.com",1),
+(14,"ahmet.bulut@test.com",1),
+(15,"turkay.saglam@test.com",1),
+(15,"kursat.bir@test.com",1),
+(15,"serpil.elmas@test.com",0),
+(16,"ayse.cınar@test.com",0),
+(16,"gokalp.gol@test.com",0),
+(16,"doruk.demir@test.com",0),
+(17,"metehan.cevik@test.com",0),
+(17,"berke.ozenc@test.com",0),
+(17,"kursat.bir@test.com",0.5),
+(18,"erkin.bozkurt@test.com",0),
+(18,"ayse.cınar@test.com",0),
+(18,"hasan.yuce@test.com",0),
+(19,"berke.ozenc@test.com",0.5),
+(19,"turkay.saglam@test.com",0),
+(19,"serpil.elmas@test.com",0);
+
